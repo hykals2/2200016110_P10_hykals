@@ -1,12 +1,25 @@
 pipeline {
     agent any
-    environment {
-        CI = 'true'
-    }
+    environment { CI = 'true' }
     stages {
+        stage('Debug Context') {
+            steps {
+                script {
+                    def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
+                    echo "Current Branch Name: ${branch}"
+                }
+            }
+        }
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/hykals2/2200016110_P10_hykals'
+                script {
+                    def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
+                    if (branch == 'main') {
+                        git branch: 'main', url: 'https://github.com/hykals2/2200016110_P10_hykals'
+                    } else if (branch == 'develop') {
+                        git branch: 'develop', url: 'https://github.com/hykals2/2200016110_P10_hykals'
+                    }
+                }
             }
         }
         stage('Install Dependencies') {
@@ -16,44 +29,39 @@ pipeline {
         }
         stage('Run Unit Tests') {
             steps {
-                sh 'npm test'
+                sh 'npm run test:unit'
             }
         }
-        stage('Integration Tests') {
+        stage('Run Integration Tests') {
             steps {
-                echo 'Running integration tests...'
-                // Tambahkan perintah pengujian integrasi di sini
+                sh 'npm run test:integration'
             }
         }
         stage('Build') {
             steps {
-                echo 'Building the application...'
-                // Tambahkan perintah build jika diperlukan
+            echo 'Building the application...'
             }
         }
-        stage('Deploy') {
+        stage('Deploy to Staging') {
             steps {
-                echo 'Deploying the application...'
-                // Tambahkan perintah deploy jika diperlukan
+                echo 'Simulating deployment to staging...'
             }
         }
     }
-    post {
-        success {
-            echo 'Pipeline finished successfully!'
+    post { 
+        success { 
             emailext (
-                subject: 'Build Succeeded',
-                body: 'The build succeeded!',
+                subject: 'Build Succeeded', 
+                body: 'The build succeeded!', 
                 to: '2200016110@webmail.uad.ac.id'
             )
-        }
-        failure {
-            echo 'Pipeline failed!'
+        } 
+        failure { 
             emailext (
                 subject: 'Build Failed',
-                body: 'The build failed.',
+                body: 'The build failed.', 
                 to: '2200016110@webmail.uad.ac.id'
             )
-        }
+        } 
     }
 }
