@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "test:unit": "jest --testPathPattern=app.test.js",
-    "test:integration": "jest --testPathPattern=integration"
+    "test:integration": "jest --testPathPattern=integration.test.js"
   },
   "keywords": [],
   "author": "",
