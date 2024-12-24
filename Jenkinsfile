@@ -41,9 +41,19 @@ pipeline {
     post {
         success {
             echo 'Pipeline finished successfully!'
+            emailext (
+                subject: 'Build Succeeded',
+                body: 'The build succeeded!',
+                to: '2200016110@webmail.uad.ac.id'
+            )
         }
         failure {
             echo 'Pipeline failed!'
+            emailext (
+                subject: 'Build Failed',
+                body: 'The build failed.',
+                to: '2200016110@webmail.uad.ac.id'
+            )
         }
     }
 }
