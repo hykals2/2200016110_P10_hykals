@@ -15,9 +15,9 @@ pipeline {
                 script {
                     def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
                     if (branch == 'main') {
-                        git branch: 'main', url: 'https://github.com/hykals2/2200016110_P10_hykals'
+                        git branch: 'main', url: 'https://github.com/hykals2/2200016110_P10_hykals.git'
                     } else if (branch == 'develop') {
-                        git branch: 'develop', url: 'https://github.com/hykals2/2200016110_P10_hykals'
+                        git branch: 'develop', url: 'https://github.com/hykals2/2200016110_P10_hykals.git'
                     }
                 }
             }
